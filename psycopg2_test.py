@@ -4,7 +4,7 @@ connection = pcg2.connect(
     database = "f1_database",
     user = "postgres",
     host = 'localhost',
-    password = "*********",
+    password = "postgresql",
     port = 5432
 )
 
