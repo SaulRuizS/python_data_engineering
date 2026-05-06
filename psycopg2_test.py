@@ -1,4 +1,5 @@
 import psycopg2 as pcg2
+import pandas as pd
 
 connection = pcg2.connect(
     database = "f1_database",
@@ -10,35 +11,30 @@ connection = pcg2.connect(
 
 cursor = connection.cursor()
 
-# cursor.execute("""
-    # --begin-sql
-    # CREATE TABLE postgresql_test_table (
-        # num_id  SERIAL          PRIMARY KEY
-        # ,num    INT
-        # ,info   VARCHAR(255)
-    # );
-# """)
-# 
-# cursor.execute("""
-    # --begin-sql
-    # INSERT INTO postgresql_test_table (
-        # num
-        # ,info
-    # )
-    # VALUES (
-        # %s
-        # ,%s
-    # );
-# """,(7,"Juan P. Montoya F1 Wins")
-# )
-
 cursor.execute("""
     --begin-sql
-    SELECT COUNT(*) FROM driver
-    WHERE total_race_wins >= 20;
+    SELECT
+        name
+        ,date_of_birth
+        ,date_of_death
+        ,place_of_birth
+        ,total_race_starts
+        ,total_podiums
+        ,total_race_wins
+        ,total_points
+        ,total_pole_positions
+        ,total_fastest_laps
+        ,total_grand_slams
+    FROM driver
+    WHERE date_of_birth >= '1996-01-01'
+    ORDER BY date_of_birth ASC;
 """)
 
-print(cursor.fetchmany(100))
+data = cursor.fetchall()
+
+df = pd.DataFrame(data, columns=['name', 'date_of_birth', 'date_of_death', 'place_of_birth', 'total_race_starts', 'total_podiums', 'total_race_wins', 'total_points', 'total_pole_positions', 'total_fastest_laps', 'total_grand_slams'])
+
+print(df)
 
 connection.commit()
 
