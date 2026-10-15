@@ -22,7 +22,7 @@ cursor.execute("""
     LEFT JOIN season_driver_standing ON driver.id = season_driver_standing.driver_id
     WHERE driver.date_of_birth >= '1980-01-01'
         --AND driver.total_race_wins > 0
-        AND season_driver_standing.year = 2026
+        AND season_driver_standing.year = 2025
     ORDER BY season_driver_standing.points DESC;
 """)
 
@@ -30,7 +30,7 @@ data = cursor.fetchall()
 
 df = pd.DataFrame(data, columns=['year', 'name', 'points'])
 
-graph = px.line(df, x="name", y="points", title="Season 2026 per driver")
+graph = px.line(df, x="name", y="points", title="Season 2025-2026 per driver")
 
 graph.show()
 
