@@ -1,6 +1,6 @@
 import psycopg2 as pcg2
 import pandas as pd
-#import plotly.express as px
+import plotly.express as px
 
 connection = pcg2.connect(
     database = "f1_database",
@@ -17,7 +17,7 @@ cursor.execute("""
     SELECT
         driver.name
         --,season_driver_standing.year
-        ,season_driver_standing.points
+        --,season_driver_standing.points
         --,COUNT(*) FILTER (WHERE race_result.position_display_order >= 3) AS podiums
         ,COUNT(*) FILTER (WHERE race_result.position_number = 1) AS wins
     FROM driver
@@ -34,9 +34,18 @@ cursor.execute("""
 
 data = cursor.fetchall()
 
-df = pd.DataFrame(data, columns=['Driver', 'Points', 'Wins'])
+#df1 = pd.DataFrame(data, columns=['Driver', 'Points'])
 
-print(df)
+df2 = pd.DataFrame(data, columns=['Driver', 'Wins'])
+
+#graph1 = px.line(df1, x="Driver", y="Points", title="Season 2026 points per driver")
+
+graph2 = px.bar(df2, x="Driver", y="Wins", title="Season 2026 wins per driver")
+
+#graph1.show()
+graph2.show()
+
+#print(df)
 
 #print(data)
 
